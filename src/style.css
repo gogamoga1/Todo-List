@@ -1,0 +1,411 @@
+body {
+    background: #bdc3c7; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #2c3e50,
+      #bdc3c7
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #2c3e50,
+      #bdc3c7
+    );
+
+    margin: 0;
+    color: #fff;
+  }
+  
+  .add-todo {
+    height: 50px;
+    display: inline-block;
+    font-size: 16px;
+    position: absolute;
+    cursor: pointer;
+    bottom: 0%;
+    left: 50%;
+    width: 140px;
+    padding: 4px 0;
+    transform: translateX(-50%) translateY(-50%);
+    border-radius: 5px;
+    transition-duration: 0.2s;
+    
+  }
+  
+  .add-todo:hover {
+      box-shadow:inset 0 0.6em 2em -0.3em rgba(0,0,0,0.15),inset 0 0 0em 0.05em rgba(255,255,255,0.12);
+  }
+  
+  .card-container {
+    height: 600px;
+    position: relative;
+    display: flex;
+    
+  }
+  
+  h2 {
+    color: #222;
+  }
+  
+  p {
+    font-size: 1rem;
+  }
+  
+  .todo-box {
+    position: relative;
+    background: #ad5389; /* fallback for old browsers */
+    background: -webkit-linear-gradient(
+      to right,
+      #3c1053,
+      #ad5389
+    ); /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(
+      to right,
+      #8956a5,
+      #ad5389
+    ); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+    height: 250px;
+    width: 200px;
+    margin: 10px;
+    border-radius: 5px;
+    padding: 5px;
+    text-align: center;
+  }
+  
+  .bg-container, .bg-container-info {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: none;
+    top: 0;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .bg-modal, .bg-modal-info {
+    height: 400px;
+    width: 500px;
+    background-color: white;
+    text-align: center;
+    padding: 20px;
+    position: relative;
+    border-radius: 4px;
+  }
+  
+  input {
+    margin: auto;
+    display: block;
+    width: 50%;
+    padding: 8px;
+    border: 1px solid black;
+  }
+  
+  a.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px;
+    margin: 10px;
+    cursor: pointer;
+    width: 100%;
+    opacity: 0.9;
+  }
+  
+  a.button:hover {
+    opacity: 1;
+  }
+  
+  .remove-btn {
+    display: inline-block;
+    margin: 5px;
+    padding: 5px;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .info-btn {
+    display: inline-block;
+    position: absolute;
+    border-radius: 4px;
+    cursor: pointer;
+    top: 1%;
+    right: 0%;
+  }
+  
+  #addtodo, #addtodo-info {
+    background-color: #4caf50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 0px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    transition-duration: 0.4s;
+    margin: 4px 2px;
+    cursor: pointer;
+    z-index: 1;
+  }
+  
+  #addtodo:hover, #addtodo-info:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  }
+  
+  
+  .close {
+      color: #aaa;
+      position: absolute;
+      font-size: 28px;
+      font-weight: bold;
+      right: 10px;
+      top: 0;
+      cursor: pointer;
+  }
+  
+  #isread {
+      display: inline;
+      position: absolute;
+      left: 33%;
+      top: 51.5%;
+  }
+
+  .projects-menu {
+    min-width: 400px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    background-color: rgba(163, 163, 163, 0.315);
+    box-shadow: inset 0 0 2px 3px #000;
+  }
+  
+  .projects-menu .title {
+    text-shadow: 0 0 10px #000;
+    padding: 1rem;
+    width: 90%;
+    font-size: 2.3rem;
+    font-weight: 700;
+    text-align: center;
+  }
+  
+  .projects-menu .current-project {
+    text-shadow: 0 0 10px #000, 0 0 2px rgb(255, 255, 255);
+    background-color: rgba(25, 38, 47, 0.5);
+    box-shadow: 0 0 10px 2px #000, 0 0 10px 4px rgb(48, 29, 53);
+    width: 90%;
+    text-align: center;
+    font-size: 1.5rem;
+  }
+  
+  .projects-menu .button {
+    width: 60%;
+    min-height: 3rem;
+    margin: 1rem;
+    font-weight: 700;
+    font-size: 1.2rem;
+    border: 0;
+    border-radius: 5px;
+    background-color: rgb(72, 118, 179);
+    color: #fff;
+    box-shadow: inset 0 0 50px 4px rgba(0, 0, 0, 0.6),
+      0 0 2px 2px rgba(0, 0, 0, 0.5);
+    transition-duration: 0.2s;
+  }
+  .projects-menu .button:hover {
+    background-color: rgb(77, 133, 206);
+  }
+  .project-list-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+  }
+  .project-list-container .title {
+    font-size: 1.5rem;
+    width: 90%;
+  }
+  
+  .project-list {
+    margin: 0.5rem;
+    width: 90%;
+    height: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    overflow: auto;
+    box-shadow: inset 0 0 5px 5px rgba(49, 41, 47, 0.5);
+  }
+  /* +project-element */
+  .project-element {
+    width: 100%;
+    height: 33px;
+    margin-bottom: 1rem;
+    box-shadow: 0 0 2px 4px rgb(56, 5, 52);
+    cursor: pointer;
+  }
+  .project-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.6);
+    height: 33px;
+  }
+  
+  .project-options {
+    display: flex;
+    background-color: rgba(0, 0, 0, 0);
+    width: 100%;
+    height: 33px;
+    align-items: center;
+    transform: translateY(-100%);
+    transition-duration: 1s;
+    overflow: hidden;
+    box-shadow: 0 0 1px 10px rgba(0, 0, 0, 0.4),
+      0 0 50px 5px rgba(129, 0, 146, 0.644);
+  }
+  .project-options .delete {
+    background-color: rgb(78, 33, 33);
+    transform: translateX(-130%);
+    transition-duration: 0.2s;
+    width: 20%;
+    box-shadow: inset 0 0 10px 4px rgba(0, 0, 0, 0.6);
+  }
+  .project-options .open {
+    background-color: rgb(52, 98, 52);
+    transform: translateX(130%);
+    transition-duration: 0.2s;
+    width: 80%;
+    box-shadow: inset 0 0 10px 4px rgba(0, 0, 0, 0.6);
+  }
+  .project-options .open:hover {
+    background-color: rgb(26, 153, 26);
+  }
+  .project-options .delete:hover {
+    background-color: rgb(138, 32, 32);
+  }
+  .project-element:hover {
+    box-shadow: 0 0 2px 4px rgb(97, 8, 90);
+  }
+  .project-element:hover .project-options {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+  .project-element:hover .delete {
+    transform: translateX(0);
+  }
+  .project-element:hover .open {
+    transform: translateX(0);
+  }
+
+  .display-none {
+    display: none !important;
+  }
+
+  .modal-wrapper {
+    background-color: rgba(0, 0, 0, 0.7);
+    position: fixed;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 80;
+    display: grid;
+    justify-content: center;
+  }
+  
+  .modal {
+    background-color: rgb(38, 53, 53);
+    box-shadow: 0 0 10px 2px #000;
+    border-radius: 5px;
+    display: grid;
+    width: 400px;
+    height: 400px;
+    overflow: hidden;
+    margin-top: 20vh;
+  }
+  .modal-title {
+    height: 4rem;
+    font-size: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgb(30, 65, 68);
+    box-shadow: inset 0 0 100px 3px rgba(0, 0, 0, 0.7);
+    border-bottom: 2px solid rgb(165, 165, 165);
+  }
+  .modal-title h2 {
+    text-shadow: 0 0 4px #000, 0 0 6px rgb(5, 29, 32);
+  }
+  .modal-content {
+    display: flex;
+    justify-self: center;
+    flex-direction: column;
+    width: 100%;
+    padding: 1rem;
+  }
+  
+  .modal-content label {
+    height: 2rem;
+    margin-bottom: 0.2rem;
+    text-align: center;
+    font-size: 1.5rem;
+    color: rgb(64, 207, 226);
+    text-shadow: 0 0 2px #000;
+   
+  }
+  
+  .modal-content .invalid {
+    font-size: 1.2rem;
+    color: rgb(255, 114, 114);
+  }
+  
+  .modal-content input {
+    padding-left: 0.5rem;
+    width: 100%;
+    border: 0;
+    color: #fff;
+    background-color: rgba(11, 72, 80, 0.5);
+    box-shadow: inset 0 0 1px 2px rgba(0, 0, 0, 0.4);
+    font-size: 1.5rem;
+    height: 3rem;
+  }
+  .modal-content input:focus,
+  .modal-content input:hover {
+    background-color: rgba(11, 72, 80, 1);
+  }
+  .modal-options {
+    border-top: 2px solid rgb(165, 165, 165);
+    height: 4rem;
+    width: 100%;
+    align-self: end;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 4px;
+    justify-content: space-between;
+    background-color: rgb(46, 0, 58);
+  }
+  .modal-options .button {
+    border: 0;
+    font-size: 1.5rem;
+    color: #fff;
+    min-width: 50%;
+    box-shadow: inset 0 0 20px 2px #000;
+  }
+  .modal-options .cancel {
+    background-color: rgba(255, 0, 0, 0.4);
+  }
+  .modal-options .cancel:hover {
+    background-color: rgba(255, 0, 0, 0.7);
+  }
+  .modal-options .create,
+  .modal-options .edit {
+    background-color: rgba(0, 128, 0, 0.4);
+  }
+  .modal-options .create:hover,
+  .modal-options .edit:hover {
+    background-color: rgba(0, 128, 0, 0.7);
+  }
+  

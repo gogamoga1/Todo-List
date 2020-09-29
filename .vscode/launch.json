@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "pwa-chrome",
+            "url": "http://localhost:1234",
+            "webRoot": "${workspaceFolder}/src"
+        },
+        {
+            "name": "Launch Edge",
+            "request": "launch",
+            "type": "pwa-msedge",
+            "url": "http://localhost:1234",
+            "webRoot": "${workspaceFolder}"
+        },
+    {
+        "type": "pwa-chrome",
+        "request": "launch",
+        "name": "Launch Chrome against localhost",
+        "url": "http://localhost:1234",
+        "webRoot": "${workspaceFolder}",
+        "sourceMapPathOverrides": {
+          "../*": "${webRoot}/*"
+        }
+    }
+    ]
+}
