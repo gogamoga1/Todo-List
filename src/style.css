@@ -305,6 +305,11 @@ body {
     display: none !important;
   }
 
+  .task-completed {
+    text-decoration-color: #010203 !important;
+    text-decoration: line-through;
+  }
+
   .modal-wrapper {
     background-color: rgba(0, 0, 0, 0.7);
     position: fixed;
@@ -409,3 +414,15 @@ body {
     background-color: rgba(0, 128, 0, 0.7);
   }
   
+
+  .Low {
+    border: 2px solid rgb(7, 190, 7);
+  } 
+
+  .Normal {
+    border: 2px solid rgb(238, 248, 103);
+  } 
+
+  .High {
+    border: 2px solid rgb(228, 68, 81);
+  } 

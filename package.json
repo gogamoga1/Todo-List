@@ -19,5 +19,9 @@
   "homepage": "https://github.com/gogamoga1/Todo-List#readme",
   "dependencies": {
     "date-fns": "^2.16.1"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.10.0"
   }
 }

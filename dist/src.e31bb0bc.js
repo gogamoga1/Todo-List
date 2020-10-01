@@ -18310,8 +18310,13 @@ var getElement = function getElement(selector) {
 };
 
 exports.getElement = getElement;
-},{}],"index.js":[function(require,module,exports) {
+},{}],"TodoClass.js":[function(require,module,exports) {
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.Projects = exports.Todo = exports.currProjId = void 0;
 
 var _dateFns = require("date-fns");
 
@@ -18323,70 +18328,69 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+var currProjId = JSON.parse(localStorage.getItem("currProjId")) || 0;
+exports.currProjId = currProjId;
+var container = (0, _domMan.getElement)(".card-container");
+var projectList = (0, _domMan.getElement)(".project-list");
 var idBox = undefined;
-var currProjId = JSON.parse(localStorage.getItem('currProjId')) || 0;
-var projects = JSON.parse(localStorage.getItem('projects')) || [{
+
+var Projects = /*#__PURE__*/function () {
+  function Projects() {
+    _classCallCheck(this, Projects);
+  }
+
+  _createClass(Projects, null, [{
+    key: "displayProjects",
+    value: function displayProjects() {
+      var _this = this;
+
+      while (projectList.childElementCount > 0) {
+        projectList.removeChild(projectList.lastChild);
+      }
+
+      this.projects.forEach(function (element, idx) {
+        var prElem = (0, _domMan.createElement)("div", "project-element");
+        var prName = (0, _domMan.createElement)("div", "project-name");
+        var h2 = (0, _domMan.createElement)("h2", undefined, "".concat(element.name));
+        projectList.appendChild(prElem);
+        prElem.appendChild(prName);
+        prName.appendChild(h2);
+        prName.addEventListener("click", function () {
+          (0, _domMan.getElement)(".current-project.title-separator").textContent = h2.textContent;
+          exports.currProjId = currProjId = idx;
+          localStorage.setItem("currProjId", JSON.stringify(currProjId));
+          Todo.displayTodos();
+
+          _this.displayProjects();
+        });
+      });
+    }
+  }]);
+
+  return Projects;
+}();
+
+exports.Projects = Projects;
+
+_defineProperty(Projects, "projects", JSON.parse(localStorage.getItem("projects")) || [{
   name: "Default project",
   tasks: []
-}];
-var projectList = (0, _domMan.getElement)(".project-list");
-var container = document.querySelector(".card-container");
-(0, _domMan.getElement)(".current-project.title-separator").textContent = projects[currProjId].name;
-var newProjBtn = (0, _domMan.getElement)("#new-prj-btn");
-newProjBtn.addEventListener("click", function () {
-  (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
-  (0, _domMan.getElement)("#new-project-name").value = "";
-});
-var closePopUp = document.getElementsByTagName('span')[0];
-closePopUp.addEventListener('click', function () {
-  return document.querySelector(".bg-container").style.display = "none";
-});
-var btnCreatePrj = (0, _domMan.getElement)(".button.create");
-btnCreatePrj.addEventListener("click", function () {
-  if ((0, _domMan.getElement)("#new-project-name").value === "") {
-    alert("Please enter the name");
-  } else {
-    (0, _domMan.getElement)("#new-project-name").disabled = false;
-    projects.push({
-      name: (0, _domMan.getElement)("#new-project-name").value,
-      tasks: []
-    });
-    (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
-    displayProjects();
-    Todo.saveToStorage();
-  }
+}]);
 
-  ;
-});
-var btnCancelPrj = (0, _domMan.getElement)(".button.cancel");
-btnCancelPrj.addEventListener("click", function () {
-  (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
-});
-var btnTodo = document.querySelector(".add-todo");
-btnTodo.addEventListener("click", function () {
-  document.querySelector(".bg-container").style.display = "flex";
-});
-var btnAdd = document.querySelector("#addtodo");
-btnAdd.addEventListener("click", function () {
-  document.querySelector(".bg-container").style.display = "none";
-  new Todo(form.title.value, form.description.value, form.duedate.value, form.priority.value, form.notes.value).addTodoToLibrary(); //addTodoToLibrary(new Todo());
-
-  form.reset();
-});
-var btnEdit = document.querySelector("#addtodo-info");
-btnEdit.addEventListener("click", function () {
-  if (btnEdit.value === "Edit") {
-    document.querySelector("fieldset").disabled = false;
-    console.log(btnEdit.value);
-    btnEdit.value = "Save & Close";
-  } else if (btnEdit.value === "Save & Close") {
-    btnEdit.value = "Edit";
-    document.querySelector(".bg-container-info").style.display = "none";
-    Todo.updateTodo(idBox);
-    Todo.displayTodos();
-    document.querySelector("fieldset").disabled = true;
-  }
-});
+function infoDisplay(id) {
+  idBox = id;
+  (0, _domMan.getElement)(".bg-container-info").style.display = "flex";
+  (0, _domMan.getElement)("#title-info").value = Projects.projects[currProjId].tasks[id].title;
+  (0, _domMan.getElement)("#description-info").value = Projects.projects[currProjId].tasks[id].description;
+  (0, _domMan.getElement)("#priority-info").value = Projects.projects[currProjId].tasks[id].priority;
+  (0, _domMan.getElement)("#notes-info").value = Projects.projects[currProjId].tasks[id].notes;
+  (0, _domMan.getElement)("#duedate-info").value = Projects.projects[currProjId].tasks[id].dueDate;
+  document.getElementsByTagName("span")[1].addEventListener("click", function () {
+    return (0, _domMan.getElement)(".bg-container-info").style.display = "none";
+  });
+}
 
 var Todo = /*#__PURE__*/function () {
   function Todo(title, description, dueDate, priority, notes) {
@@ -18405,31 +18409,33 @@ var Todo = /*#__PURE__*/function () {
   _createClass(Todo, [{
     key: "addTodoToLibrary",
     value: function addTodoToLibrary() {
-      projects[currProjId].tasks;
-      projects[currProjId].tasks.push(this);
+      Projects.projects[currProjId].tasks;
+      Projects.projects[currProjId].tasks.push(this);
       Todo.saveToStorage();
       Todo.addTodo();
     }
   }], [{
     key: "saveToStorage",
     value: function saveToStorage() {
-      localStorage.setItem('projects', JSON.stringify(projects));
+      localStorage.setItem("projects", JSON.stringify(Projects.projects));
     }
   }, {
     key: "updateTodo",
-    value: function updateTodo(id) {
-      projects[currProjId].tasks[id].title = (0, _domMan.getElement)("#title-info").value;
-      projects[currProjId].tasks[id].description = (0, _domMan.getElement)("#description-info").value;
-      projects[currProjId].tasks[id].priority = (0, _domMan.getElement)("#priority-info").value;
-      projects[currProjId].tasks[id].notes = (0, _domMan.getElement)("#notes-info").value;
-      projects[currProjId].tasks[id].dueDate = (0, _domMan.getElement)("#duedate-info").value;
+    value: function updateTodo() {
+      var id = idBox;
+      Projects.projects[currProjId].tasks[id].title = (0, _domMan.getElement)("#title-info").value;
+      Projects.projects[currProjId].tasks[id].description = (0, _domMan.getElement)("#description-info").value;
+      Projects.projects[currProjId].tasks[id].priority = (0, _domMan.getElement)("#priority-info").value;
+      Projects.projects[currProjId].tasks[id].notes = (0, _domMan.getElement)("#notes-info").value;
+      Projects.projects[currProjId].tasks[id].dueDate = (0, _domMan.getElement)("#duedate-info").value || "not set";
       this.saveToStorage();
     }
   }, {
     key: "isCompleted",
     value: function isCompleted(el) {
-      projects[currProjId].tasks[el.target.id].completed = !projects[currProjId].tasks[el.target.id].completed;
+      Projects.projects[currProjId].tasks[el.target.id].completed = !Projects.projects[currProjId].tasks[el.target.id].completed;
       el.target.previousElementSibling.textContent = "".concat(el.target.checked ? "Completed" : "To do");
+      (0, _domMan.getElement)("[data-todo=\"".concat(el.target.id, "\"]")).classList.toggle("task-completed");
       this.saveToStorage();
     }
   }, {
@@ -18439,26 +18445,25 @@ var Todo = /*#__PURE__*/function () {
         container.removeChild(container.lastChild);
       }
 
-      projects[currProjId].tasks.forEach(this.addTodo);
+      Projects.projects[currProjId].tasks.forEach(this.addTodo);
     }
   }, {
     key: "addTodo",
     value: function addTodo(lastItem, index) {
       if (lastItem == null) {
-        lastItem = projects[currProjId].tasks[projects[currProjId].tasks.length - 1];
-        index = projects[currProjId].tasks.length - 1;
+        lastItem = Projects.projects[currProjId].tasks[Projects.projects[currProjId].tasks.length - 1];
+        index = Projects.projects[currProjId].tasks.length - 1;
       }
 
-      var div = document.createElement("div");
-      var h2 = document.createElement("h2");
-      var p1 = document.createElement("p");
-      var p2 = document.createElement("p");
-      var p22 = document.createElement("p");
-      var p3 = document.createElement("p");
-      var newCheckBox = document.createElement("input");
-      var removeBtn = document.createElement("button");
-      var infoBtn = document.createElement("button");
-      div.classList.add("todo-box");
+      var div = (0, _domMan.createElement)("div", "todo-box");
+      var h2 = (0, _domMan.createElement)("h2");
+      var p1 = (0, _domMan.createElement)("p");
+      var p2 = (0, _domMan.createElement)("p");
+      var pPriority = (0, _domMan.createElement)("p");
+      var p3 = (0, _domMan.createElement)("p");
+      var newCheckBox = (0, _domMan.createElement)("input");
+      var removeBtn = (0, _domMan.createElement)("button");
+      var infoBtn = (0, _domMan.createElement)("button");
       div.setAttribute("data-todo", "".concat(index));
       container.appendChild(div);
       h2.textContent = "".concat(lastItem.title, ", [").concat(index, "]");
@@ -18469,9 +18474,10 @@ var Todo = /*#__PURE__*/function () {
         addSuffix: true
       }) : lastItem.dueDate);
       div.appendChild(p2);
-      p22.textContent = "Priority: ".concat(lastItem.priority);
-      div.appendChild(p22);
-      p3.textContent = lastItem.completed ? "Completed" : "Still to do";
+      pPriority.textContent = (div.classList.toggle(lastItem.priority), "Priority: ".concat(lastItem.priority)); // Color border accroding to priority
+
+      div.appendChild(pPriority);
+      p3.textContent = lastItem.completed ? (div.classList.toggle("task-completed"), "Completed") : "Still to do";
       div.appendChild(p3);
       newCheckBox.type = "checkbox";
       newCheckBox.checked = lastItem.completed;
@@ -18494,102 +18500,113 @@ var Todo = /*#__PURE__*/function () {
   return Todo;
 }();
 
-function displayProjects() {
-  while (projectList.childElementCount > 0) {
-    projectList.removeChild(projectList.lastChild);
-  }
+exports.Todo = Todo;
+(0, _domMan.getElement)(".current-project.title-separator").textContent = Projects.projects[currProjId].name;
+},{"date-fns":"../node_modules/date-fns/esm/index.js","./domMan":"domMan.js"}],"eventListeners.js":[function(require,module,exports) {
+"use strict";
 
-  projects.forEach(function (element, idx) {
-    var prElem = (0, _domMan.createElement)("div", "project-element");
-    var prName = (0, _domMan.createElement)("div", "project-name");
-    var h2 = (0, _domMan.createElement)("h2", undefined, "".concat(element.name));
-    projectList.appendChild(prElem);
-    prElem.appendChild(prName);
-    prName.appendChild(h2);
-    prName.addEventListener("click", function () {
-      (0, _domMan.getElement)(".current-project.title-separator").textContent = h2.textContent;
-      currProjId = idx;
-      localStorage.setItem('currProjId', JSON.stringify(currProjId));
-      console.log(currProjId);
-      Todo.displayTodos();
-      displayProjects();
-    });
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.initEvents = initEvents;
+
+var _domMan = require("./domMan");
+
+var _TodoClass = require("./TodoClass");
+
+var newProjBtn = (0, _domMan.getElement)("#new-prj-btn");
+var closePopUp = document.getElementsByTagName('span')[0];
+var btnCreatePrj = (0, _domMan.getElement)(".button.create");
+var btnCancelPrj = (0, _domMan.getElement)(".button.cancel");
+var btnTodo = (0, _domMan.getElement)(".add-todo");
+var btnAdd = (0, _domMan.getElement)("#addtodo");
+var btnEdit = (0, _domMan.getElement)("#addtodo-info");
+
+function initEvents() {
+  newProjBtn.addEventListener("click", function () {
+    (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
+    (0, _domMan.getElement)("#new-project-name").value = "";
+  });
+  closePopUp.addEventListener('click', function () {
+    return (0, _domMan.getElement)(".bg-container").style.display = "none";
+  });
+  btnCreatePrj.addEventListener("click", function () {
+    if ((0, _domMan.getElement)("#new-project-name").value === "") {
+      alert("Please enter the name");
+    } else {
+      (0, _domMan.getElement)("#new-project-name").disabled = false;
+
+      _TodoClass.Projects.projects.push({
+        name: (0, _domMan.getElement)("#new-project-name").value,
+        tasks: []
+      });
+
+      console.log(_TodoClass.Projects.projects);
+      (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
+
+      _TodoClass.Projects.displayProjects();
+
+      _TodoClass.Todo.saveToStorage();
+    }
+  });
+  btnCancelPrj.addEventListener("click", function () {
+    (0, _domMan.getElement)(".modal-wrapper").classList.toggle("display-none");
+  });
+  btnTodo.addEventListener("click", function () {
+    (0, _domMan.getElement)(".bg-container").style.display = "flex";
+  });
+  btnAdd.addEventListener("click", function () {
+    (0, _domMan.getElement)(".bg-container").style.display = "none";
+    new _TodoClass.Todo(form.title.value, form.description.value, form.duedate.value, form.priority.value, form.notes.value).addTodoToLibrary(); //addTodoToLibrary(new Todo());
+
+    form.reset();
+  });
+  btnEdit.addEventListener("click", function () {
+    if (btnEdit.value === "Edit") {
+      (0, _domMan.getElement)("fieldset").disabled = false;
+      btnEdit.value = "Save & Close";
+    } else if (btnEdit.value === "Save & Close") {
+      btnEdit.value = "Edit";
+      (0, _domMan.getElement)(".bg-container-info").style.display = "none";
+
+      _TodoClass.Todo.updateTodo();
+
+      _TodoClass.Todo.displayTodos();
+
+      (0, _domMan.getElement)("fieldset").disabled = true;
+    }
+  });
+  document.body.addEventListener('click', function (e) {
+    if (e.target.className === 'remove-btn') {
+      _TodoClass.Projects.projects[_TodoClass.currProjId].tasks.splice(e.target.id, 1);
+
+      _TodoClass.Todo.saveToStorage();
+
+      var el = (0, _domMan.getElement)("[data-todo=\"".concat(e.target.id, "\"]"));
+      el.remove();
+
+      _TodoClass.Todo.displayTodos();
+    }
+
+    if (e.target.type === "checkbox") {
+      _TodoClass.Todo.isCompleted(e);
+    }
   });
 }
+},{"./domMan":"domMan.js","./TodoClass":"TodoClass.js"}],"index.js":[function(require,module,exports) {
+"use strict";
 
-document.body.addEventListener('click', function (e) {
-  if (e.target.className === 'remove-btn') {
-    projects[currProjId].tasks.splice(e.target.id, 1);
-    Todo.saveToStorage();
-    var el = document.querySelector("[data-todo=\"".concat(e.target.id, "\"]"));
-    el.remove();
-    Todo.displayTodos();
-  }
+var _TodoClass = require("./TodoClass");
 
-  if (e.target.type === "checkbox") {
-    Todo.isCompleted(e);
-  }
-});
+var _eventListeners = require("./eventListeners");
 
-function infoDisplay(id) {
-  idBox = id;
-  document.querySelector(".bg-container-info").style.display = "flex";
-  (0, _domMan.getElement)("#title-info").value = projects[currProjId].tasks[id].title;
-  (0, _domMan.getElement)("#description-info").value = projects[currProjId].tasks[id].description;
-  (0, _domMan.getElement)("#priority-info").value = projects[currProjId].tasks[id].priority;
-  (0, _domMan.getElement)("#notes-info").value = projects[currProjId].tasks[id].notes;
-  (0, _domMan.getElement)("#duedate-info").value = projects[currProjId].tasks[id].dueDate;
-  document.getElementsByTagName('span')[1].addEventListener('click', function () {
-    return document.querySelector(".bg-container-info").style.display = "none";
-  }); // let div = createElement("div", "bg-modal");
-  // // let divp = createElement("div", "divp");
-  // let container1 = createElement("div", "bg-container")
-  // container1.style.display = "flex";
-  // let form = createElement("form", undefined, undefined, `form`);
-  // //<label for="priority">Set a priority:</label>
-  // const label = createElement("label")
-  // label.htmlFor = "title"
-  // label.textContent = "Title: "
-  // const input = createElement("input", undefined, undefined, "addtodo")
-  // input.value = "Edit"
-  // console.dir(input)
-  // let fieldset = createElement("fieldset");
-  // fieldset.disabled = true
-  // let close = createElement("span", "close");
-  // close.textContent = "X"
-  // const input1 = createElement("input", undefined, undefined, `title`)
-  // input1.setAttribute("type","text");
-  // input1.value = projects[currProjId].tasks[id].title
-  // const input2 = createElement("input", undefined, undefined, `description`)
-  // input2.setAttribute("type","text");
-  // input2.value = projects[currProjId].tasks[id].description
-  // const br = createElement("br")
-  // const p2 = document.createElement("p");
-  // p2.textContent = `Due date: ${projects[currProjId].tasks[id].dueDate}`;
-  // const pPriority = document.createElement("p");
-  // pPriority.textContent = `Priority: ${projects[currProjId].tasks[id].priority}`;
-  // const notesArea = createElement("textarea");
-  // notesArea.textContent = projects[currProjId].tasks[id].notes;
-  // container.appendChild(container1)
-  // container1.appendChild(div);
-  // div.appendChild(form)
-  // form.appendChild(fieldset)
-  // fieldset.appendChild(close)
-  // fieldset.appendChild(label)
-  // fieldset.appendChild(input1)
-  // fieldset.appendChild(input2)
-  // fieldset.appendChild(p2)
-  // fieldset.appendChild(pPriority)
-  // fieldset.appendChild(notesArea)
-  // fieldset.appendChild(br)
-  // fieldset.appendChild(input)
-}
+///////////////////// Functions
+(0, _eventListeners.initEvents)();
 
-console.log(projects);
-Todo.displayTodos();
-displayProjects();
-console.log(currProjId);
-},{"date-fns":"../node_modules/date-fns/esm/index.js","./domMan":"domMan.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+_TodoClass.Todo.displayTodos();
+
+_TodoClass.Projects.displayProjects();
+},{"./TodoClass":"TodoClass.js","./eventListeners":"eventListeners.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -18617,7 +18634,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "32098" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "28656" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
