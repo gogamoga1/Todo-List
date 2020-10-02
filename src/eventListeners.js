@@ -1,6 +1,8 @@
 
 import {getElement } from "./domMan";
-import {Todo, Projects, currProjId} from "./TodoClass"
+import {Todo, Projects} from "./TodoClass"
+import { currProjId } from "./createElements";
+
 
 
 
@@ -11,6 +13,9 @@ const btnCancelPrj = getElement(".button.cancel")
 const btnTodo = getElement(".add-todo");
 const btnAdd = getElement("#addtodo");
 const btnEdit = getElement("#addtodo-info");
+
+
+
 function initEvents () {
 newProjBtn.addEventListener("click", () => {
   getElement(".modal-wrapper").classList.toggle("display-none");
@@ -76,5 +81,8 @@ btnEdit.addEventListener("click", () => {
     }
   
   } );}
+
+  getElement(".current-project.title-separator").textContent = Projects.projects[currProjId].name
+
 
   export {initEvents}
