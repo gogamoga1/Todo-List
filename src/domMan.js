@@ -1,16 +1,16 @@
 const createElement = (tag, className, text, id) => {
-    const element = document.createElement(tag);
-    if (id) element.id = id;
-    if (text) element.textContent = text;
-    if (className) element.classList.add(className);
+  const element = document.createElement(tag)
+  if (id) element.id = id
+  if (text) element.textContent = text
+  if (className) element.classList.add(className)
 
-    return element;
-  };
+  return element
+}
 
-  const getElement = (selector) => {
-    const element = document.querySelector(selector);
+const getElement = (selector) => {
+  const element = document.querySelector(selector)
 
-    return element;
-  };
+  return element
+}
 
-  export { createElement, getElement }
+export { createElement, getElement }
